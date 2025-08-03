@@ -1,8 +1,6 @@
 import config, { tilesetTexturePath, tilemapDataPath } from "./config.js";
 import tmxParser from "./lib/tmxParser.js";
 
-'use strict';
-
 let tileMapData = {};
 
 async function init() {
