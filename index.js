@@ -9,19 +9,20 @@ async function init() {
     tileMapData = await response.json();
 
     const levelSize = vec2(tileMapData.width, tileMapData.height);
-    const layerData = tileMapData.layers[0].data;
-    const tileLayer = new TileLayer(vec2(), levelSize, tile(0, vec2(tileMapData.tilewidth, tileMapData.tileheight), config.textures.indexOf(tilesetTexturePath)));
-    for (let x = levelSize.x; x--;) {
-        for (let y = levelSize.y; y--;) {
-            const pos = vec2(x, levelSize.y - 1 - y);
-            const tile = layerData[y * levelSize.x + x];
-            if (tile > 0) {
-                const data = new TileLayerData(tile - 1);
-                tileLayer.setData(pos, data);
+    tileMapData.layers.forEach((currentLayer) => {
+        const tileLayer = new TileLayer(vec2(), levelSize, tile(0, vec2(tileMapData.tilewidth, tileMapData.tileheight), config.textures.indexOf(tilesetTexturePath)));
+        for (let x = levelSize.x; x--;) {
+            for (let y = levelSize.y; y--;) {
+                const pos = vec2(x, levelSize.y - 1 - y);
+                const tile = currentLayer.data[y * levelSize.x + x];
+                if (tile > 0) {
+                    const data = new TileLayerData(tile - 1);
+                    tileLayer.setData(pos, data);
+                }
             }
         }
-    }
-    tileLayer.redraw();
+        tileLayer.redraw();
+    });
 
     const centerX = (tileMapData.width) / 2;
     const centerY = (tileMapData.height) / 2;
