@@ -1,4 +1,5 @@
 import config, { tilesetTexturePath, tilemapDataPath } from "./config.js";
+import tmxParser from "./lib/tmxParser.js";
 
 'use strict';
 
@@ -6,7 +7,8 @@ let tileMapData = {};
 
 async function init() {
     const response = await fetch(tilemapDataPath);
-    tileMapData = await response.json();
+    const tmxString = await response.text();
+    tileMapData = tmxParser(tmxString);
 
     const levelSize = vec2(tileMapData.width, tileMapData.height);
     tileMapData.layers.forEach((currentLayer) => {
